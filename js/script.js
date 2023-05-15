@@ -17,11 +17,10 @@ async function getdata(file) {
                 // console.log(column);
                 column.className = "col-md-3 my-4 " + "upnew" + i + " ";
                 document.getElementsByClassName("row")[0].appendChild(column);
-                userArr.push(column);
-
                 const imgs = new Image(); // width, height
                 imgs.className = "w-100 " + "height-img";
                 imgs.src = setdata[i].thumbnail;
+                
                 document.getElementsByClassName("upnew" + i)[0].appendChild(imgs);
 
                 let img = document.createElement("p");
@@ -30,19 +29,22 @@ async function getdata(file) {
                 img.appendChild(imgNode);
 
                 let description = document.createElement("p");
-                description.className = "card-text";
+                description.className = "card-text"+" "+"for-star";
                 const des = document.createTextNode(setdata[i].description);
                 description.appendChild(des);
 
-                let p2 = document.createElement("div");
-                // p2.className = "card-img-top";
-                const imgsf = new Image(90, 35); // width, height
-                imgsf.className = "mb-0";
-                imgsf.src = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR0Q5Y_7RQSrol63ri2qlNbLp0eN2nXBU8wjS4BzFZ6&s";
-                p2.appendChild(imgsf);
-
+                let starr = document.createElement("input");
+                starr.className = "rating";
+                starr.max = "5";
+                starr.readOnly
+                let ranking = setdata[i].rating;
+                console.log(ranking)
+                starr.step = "0.01";
+                starr.style = `--value:${ranking}`;
+                starr.type = "range";
+                
                 let price = document.createElement("p");
-                price.className = "card-img-top";
+                price.className = "card-img-top"+" "+"pt-2";
                 const priceNode = document.createTextNode("$" + setdata[i].price);
                 price.appendChild(priceNode);
 
@@ -53,17 +55,21 @@ async function getdata(file) {
 
                 document.getElementsByClassName("upnew" + i)[0].appendChild(img);
                 document.getElementsByClassName("upnew" + i)[0].appendChild(description);
-                document.getElementsByClassName("upnew" + i)[0].appendChild(p2);
+                document.getElementsByClassName("upnew" + i)[0].appendChild(starr);
                 document.getElementsByClassName("upnew" + i)[0].appendChild(price);
                 document.getElementsByClassName("upnew" + i)[0].appendChild(btn);
+
+                userName.addEventListener("input", (e) => {
+                    const val = e.target.value;
+                    userArr.push(setdata[i].title);
+                    console.log(val);
+                    userArr.map((curEle) => {
+                        curEle.toLowerCase().includes(val.toLowerCase()) ? 
+                        document.getElementsByClassName("upnew" + i)[0].classList.remove("hide")
+                         : document.getElementsByClassName("upnew" + i)[0].classList.add("hide");
+                    });
+                });
             }
         });
-    userName.addEventListener("input", (e) => {
-        const val = e.target.value;
-        console.log(val);
-        userArr.map((curEle) => {
-            // console.log(curEle.innerText)
-            curEle.innerText.toLowerCase().includes(val.toLowerCase()) ? curEle.classList.remove("hide") : curEle.classList.add("hide");
-        });
-    });
+    
 }
